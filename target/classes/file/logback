@@ -1,0 +1,3 @@
+logback的配置 有两种方式
+1.application.yml(简单需求)
+2.xml配置（复杂需求）

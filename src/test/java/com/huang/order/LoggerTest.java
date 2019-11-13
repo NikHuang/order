@@ -25,6 +25,7 @@ public class LoggerTest {
         log.info("info=================");
         log.debug("debug==================");
         log.error("error======================");
+        //LogBack中使用 {} 做占位符
         log.info("name: {} , password: {}","123","345");
     }
 
