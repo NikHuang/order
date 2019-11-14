@@ -1,6 +1,7 @@
 package com.huang.order.dao;
 
 import com.huang.order.domain.ProductCategory;
+import com.huang.order.service.ProductCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,6 +26,7 @@ public class ProductCategoryDaoTest {
     @Autowired
     ProductCategoryDao productCategoryDao;
 
+
     @Test
     public void findOneTest(){
         ProductCategory productCategory = productCategoryDao.findOneTest(1);
@@ -34,8 +36,8 @@ public class ProductCategoryDaoTest {
     @Test
     public void saveTest(){
         ProductCategory productCategory = new ProductCategory();
-        productCategory.setCategoryName("测试11");
-        productCategory.setCategoryType(11);
+        productCategory.setCategoryName("测试2");
+        productCategory.setCategoryType(2);
         productCategoryDao.saveTest(productCategory);
         int testId = productCategory.getCategoryId();
         log.info(testId+"==================");
@@ -53,7 +55,7 @@ public class ProductCategoryDaoTest {
     }
     @Test
     public void findListTest(){
-        List<Integer> typeList = Arrays.asList(5,6,7);
+        List<Integer> typeList = Arrays.asList(1,2);
         List<ProductCategory> l = productCategoryDao.findListTest(typeList);
         Assert.assertNotEquals(0,l.size());
     }
