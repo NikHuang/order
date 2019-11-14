@@ -23,6 +23,7 @@ public class LoggerTest {
     @Test
     public void doLoggerTest(){
         log.info("info=================");
+        log.warn("warn=================");
         log.debug("debug==================");
         log.error("error======================");
         //LogBack中使用 {} 做占位符
