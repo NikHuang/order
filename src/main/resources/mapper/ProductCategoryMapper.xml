@@ -4,11 +4,11 @@
 
 <mapper namespace="com.huang.order.dao.ProductCategoryDao">
 
-    <select id="findOneTest" parameterType="Object" resultType="com.huang.order.domain.ProductCategory">
+    <select id="findOne" parameterType="Object" resultType="com.huang.order.domain.ProductCategory">
         SELECT * from product_category WHERE category_id = #{categoryId}
     </select>
 
-    <insert id="saveTest" parameterType="Object">
+    <insert id="save" parameterType="Object">
 --         返回自增主键
         <selectKey keyProperty="categoryId" order="AFTER" resultType="INTEGER">
           SELECT LAST_INSERT_ID()
@@ -17,15 +17,19 @@
         VALUES (#{categoryId},#{categoryName},#{categoryType})
     </insert>
 
-    <update id="updateTest" parameterType="Object">
+    <update id="update" parameterType="Object">
         UPDATE product_category SET category_name = #{categoryName},category_type=#{categoryType}
         WHERE category_id = #{categoryId}
     </update>
     
-    <select id="findListTest" parameterType="Object" resultType="com.huang.order.domain.ProductCategory">
+    <select id="findList" parameterType="Object" resultType="com.huang.order.domain.ProductCategory">
         SELECT * from product_category WHERE category_type in
         <foreach collection="typeList" item="item" index="index" open="(" close=")" separator=",">
             #{item}
         </foreach>
+    </select>
+
+    <select id="findAll" parameterType="Object" resultType="com.huang.order.domain.ProductCategory">
+        SELECT * FROM product_category
     </select>
 </mapper>

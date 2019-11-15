@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.huang.order.dao.ProductInfoDao">
+
+    <insert id="save" parameterType="Object">
+        INSERT into product_info(product_id,product_name,product_price,product_stock,product_description,
+        product_icon,product_status,category_type)
+        VALUES (#{productId},#{productName},#{productPrice},
+        #{productStock},#{productDescription},#{productIcon},#{productStatus},#{categoryType})
+    </insert>
+
+    <select id="findByStatus" parameterType="Object" resultType="com.huang.order.domain.ProductInfo">
+        SELECT * FROM product_info WHERE product_status = #{productStatus}
+    </select>
+
+    <select id="findOne" parameterType="Object" resultType="com.huang.order.domain.ProductInfo">
+        SELECT * FROM product_info WHERE product_id = #{productId}
+    </select>
+
+    <!--<select id="findAll" parameterType="Object" resultType="com.huang.order.domain.ProductInfo">-->
+        <!--SELECT * FROM product_info WHERE 1=1-->
+    <!--</select>-->
+</mapper>

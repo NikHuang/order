@@ -12,11 +12,13 @@ import java.util.List;
 @Mapper
 public interface ProductCategoryDao {
 
-    ProductCategory findOneTest(@Param("categoryId") Integer categoryId);
+    ProductCategory findOne(@Param("categoryId") Integer categoryId);
 
-    void saveTest(ProductCategory productCategory);
+    void save(ProductCategory productCategory);
 
-    void updateTest(ProductCategory productCategory);
+    void update(ProductCategory productCategory);
 
-    List<ProductCategory> findListTest(@Param("typeList") List<Integer> typeList);
+    List<ProductCategory> findList(@Param("typeList") List<Integer> typeList);
+
+    List<ProductCategory> findAll();
 }
