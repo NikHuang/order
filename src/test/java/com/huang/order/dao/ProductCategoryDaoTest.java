@@ -53,9 +53,9 @@ public class ProductCategoryDaoTest {
     @Transactional
     public void updateTest(){
         ProductCategory productCategory = new ProductCategory();
-        productCategory.setCategoryId(1);
-        productCategory.setCategoryName("测试1");
-        productCategory.setCategoryType(1);
+        productCategory.setCategoryId(2);
+        productCategory.setCategoryName("儿童专享");
+        productCategory.setCategoryType(2);
         productCategoryService.update(productCategory);
 
     }
@@ -67,7 +67,6 @@ public class ProductCategoryDaoTest {
     }
 
     @Test
-    @Transactional
     public void saveProductInfo(){
         ProductInfo productInfo = new ProductInfo();
         productInfo.setProductId(CommonUtil.generateObjectId(productInfo));
