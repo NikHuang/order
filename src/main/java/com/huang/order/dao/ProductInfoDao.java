@@ -1,5 +1,6 @@
 package com.huang.order.dao;
 
+import com.github.pagehelper.PageInfo;
 import com.huang.order.domain.ProductInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,6 +20,8 @@ public interface ProductInfoDao {
 
     ProductInfo findOne(@Param("productId") String productId);
 
+    List<ProductInfo> findAll();
 
+    List<ProductInfo> findAllWithPage();
 
 }

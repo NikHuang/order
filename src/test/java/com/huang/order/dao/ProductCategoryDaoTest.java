@@ -1,9 +1,13 @@
 package com.huang.order.dao;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.huang.order.domain.ProductCategory;
 import com.huang.order.domain.ProductInfo;
+import com.huang.order.dto.PageInfoDto;
 import com.huang.order.framework.utils.CommonUtil;
 import com.huang.order.service.ProductCategoryService;
+import com.huang.order.service.ProductInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,6 +33,9 @@ public class ProductCategoryDaoTest {
 
     @Autowired
     ProductCategoryService productCategoryService;
+
+    @Autowired
+    ProductInfoService productInfoService;
 
     @Autowired
     ProductInfoDao productInfoDao;
@@ -70,11 +77,11 @@ public class ProductCategoryDaoTest {
     public void saveProductInfo(){
         ProductInfo productInfo = new ProductInfo();
         productInfo.setProductId(CommonUtil.generateObjectId(productInfo));
-        productInfo.setProductName("酸奶");
-        productInfo.setProductPrice(BigDecimal.valueOf(6.9));
+        productInfo.setProductName("奶黄包");
+        productInfo.setProductPrice(BigDecimal.valueOf(2.0));
         productInfo.setProductStock(100);
-        productInfo.setProductDescription("原味酸奶");
-        productInfo.setProductIcon("http://xxxxx.jpg");
+        productInfo.setProductDescription("好吃的包子");
+        productInfo.setProductIcon("http://zzzzz.jpg");
         productInfo.setProductStatus(0);
         productInfo.setCategoryType(2);
         productInfoDao.save(productInfo);
@@ -89,5 +96,10 @@ public class ProductCategoryDaoTest {
     public void findOne(){
         ProductInfo productInfo = productInfoDao.findOne("aabdd9bab9254d363344567eec0395a8");
         Assert.assertNotEquals(null,productInfo);
+    }
+    @Test
+    public void findAll(){
+        PageInfo<ProductInfo> item = productInfoService.getPageInfoWithPage(new PageInfoDto(2,2));
+        Assert.assertNotEquals(null,item);
     }
 }

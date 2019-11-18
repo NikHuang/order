@@ -19,7 +19,10 @@
         SELECT * FROM product_info WHERE product_id = #{productId}
     </select>
 
-    <!--<select id="findAll" parameterType="Object" resultType="com.huang.order.domain.ProductInfo">-->
-        <!--SELECT * FROM product_info WHERE 1=1-->
-    <!--</select>-->
+    <select id="findAll" parameterType="Object" resultType="com.huang.order.domain.ProductInfo">
+        SELECT * FROM product_info WHERE 1=1
+    </select>
+    <select id="findAllWithPage" parameterType="Object" resultType="com.huang.order.domain.ProductInfo">
+        SELECT * FROM product_info WHERE 1=1
+    </select>
 </mapper>
