@@ -24,4 +24,8 @@ public interface ProductInfoDao {
 
     List<ProductInfo> findAllWithPage();
 
+    //加库存
+
+    //减库存
+
 }

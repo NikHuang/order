@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.huang.order.domain.ProductCategory;
 import com.huang.order.domain.ProductInfo;
 import com.huang.order.dto.PageInfoDto;
+import com.huang.order.enums.ProductStatusEnum;
 import com.huang.order.framework.utils.CommonUtil;
 import com.huang.order.service.ProductCategoryService;
 import com.huang.order.service.ProductInfoService;
@@ -80,10 +81,10 @@ public class ProductCategoryDaoTest {
     public void saveProductInfo(){
         ProductInfo productInfo = new ProductInfo();
         productInfo.setProductId(CommonUtil.generateObjectId(productInfo));
-        productInfo.setProductName("奶黄包");
-        productInfo.setProductPrice(BigDecimal.valueOf(2.0));
+        productInfo.setProductName("M豆");
+        productInfo.setProductPrice(BigDecimal.valueOf(5.0));
         productInfo.setProductStock(100);
-        productInfo.setProductDescription("好吃的包子");
+        productInfo.setProductDescription("高钙牛奶");
         productInfo.setProductIcon("http://zzzzz.jpg");
         productInfo.setProductStatus(0);
         productInfo.setCategoryType(2);
@@ -91,7 +92,7 @@ public class ProductCategoryDaoTest {
     }
     @Test
     public void findProductInfoByStatus(){
-        List<ProductInfo> list = productInfoDao.findByStatus(0);
+        List<ProductInfo> list = productInfoDao.findByStatus(ProductStatusEnum.ONSALE.getCode());
 //        list.forEach(item -> System.out.println(item.toString()));
         Collections.sort(list,(item1,item2) ->{
             if (item1.getCategoryType() < item2.getCategoryType()){
@@ -112,7 +113,7 @@ public class ProductCategoryDaoTest {
     }
     @Test
     public void findAll(){
-        PageInfo<ProductInfo> item = productInfoService.getPageInfoWithPage(new PageInfoDto(2,2));
+        PageInfo<ProductInfo> item = productInfoService.getPageInfoWithPage(new PageInfoDto(3,2));
         Assert.assertNotEquals(null,item);
     }
     @Test
