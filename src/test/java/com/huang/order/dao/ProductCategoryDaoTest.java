@@ -19,7 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collector;
 
 import static org.junit.Assert.*;
 
@@ -89,6 +92,16 @@ public class ProductCategoryDaoTest {
     @Test
     public void findProductInfoByStatus(){
         List<ProductInfo> list = productInfoDao.findByStatus(0);
+//        list.forEach(item -> System.out.println(item.toString()));
+        Collections.sort(list,(item1,item2) ->{
+            if (item1.getCategoryType() < item2.getCategoryType()){
+                return -1;
+            }else if (item1.getCategoryType() > item2.getCategoryType()){
+                return 1;
+            }else {
+                return item2.getProductPrice().compareTo(item1.getProductPrice());
+            }
+        } );
         Assert.assertNotEquals(0,list.size());
     }
 
@@ -101,5 +114,11 @@ public class ProductCategoryDaoTest {
     public void findAll(){
         PageInfo<ProductInfo> item = productInfoService.getPageInfoWithPage(new PageInfoDto(2,2));
         Assert.assertNotEquals(null,item);
+    }
+    @Test
+    public void testSth(){
+        List<Integer> list = Arrays.asList(1,3,2,4,5);
+        Collections.sort(list);
+        list.forEach(a -> System.out.println(a));
     }
 }
