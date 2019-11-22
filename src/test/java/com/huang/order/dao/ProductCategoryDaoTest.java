@@ -9,6 +9,7 @@ import com.huang.order.enums.ProductStatusEnum;
 import com.huang.order.framework.utils.CommonUtil;
 import com.huang.order.service.ProductCategoryService;
 import com.huang.order.service.ProductInfoService;
+import com.huang.order.test.CommonFilterService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
@@ -108,12 +109,18 @@ public class ProductCategoryDaoTest {
 
     @Test
     public void findOne(){
-        ProductInfo productInfo = productInfoDao.findOne("aabdd9bab9254d363344567eec0395a8");
-        Assert.assertNotEquals(null,productInfo);
+        List<ProductInfo> list = productInfoDao.findAll();
+        Assert.assertNotEquals(0,list.size());
+        List<ProductInfo> list1 = CommonFilterService.doFilterMethod(list,(item)->{
+            return item.getCategoryType() == 2;
+        });
+        Assert.assertNotEquals(0,list1.size());
+
     }
     @Test
     public void findAll(){
         PageInfo<ProductInfo> item = productInfoService.getPageInfoWithPage(new PageInfoDto(3,2));
+
         Assert.assertNotEquals(null,item);
     }
     @Test
