@@ -10,6 +10,8 @@ import com.huang.order.framework.utils.CommonUtil;
 import com.huang.order.service.ProductCategoryService;
 import com.huang.order.service.ProductInfoService;
 import com.huang.order.test.CommonFilterService;
+import com.huang.order.test.MyFunction;
+import com.huang.order.test.MyFunctionService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,10 +22,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collector;
 
 import static org.junit.Assert.*;
@@ -111,10 +111,19 @@ public class ProductCategoryDaoTest {
     public void findOne(){
         List<ProductInfo> list = productInfoDao.findAll();
         Assert.assertNotEquals(0,list.size());
-        List<ProductInfo> list1 = CommonFilterService.doFilterMethod(list,(item)->{
-            return item.getCategoryType() == 2;
-        });
+        List<ProductInfo> list1 = CommonFilterService.doFilterMethod(list,(item)-> (item.getCategoryType() == 2));
         Assert.assertNotEquals(0,list1.size());
+        //排序 先比CategoryType 再比price
+        Collections.sort(list,(item1,item2)->{
+            if (!(item1.getCategoryType() == item2.getCategoryType())){
+                return item1.getCategoryType().compareTo(item2.getCategoryType());
+            }else {
+                return item1.getProductPrice().compareTo(item2.getProductPrice());
+            }
+        });
+        System.out.println("==================");
+        String resultStr = MyFunctionService.stringConvert("abc",(s) -> s.toUpperCase());
+        System.out.println("resultStr = " + resultStr);
 
     }
     @Test
@@ -128,5 +137,16 @@ public class ProductCategoryDaoTest {
         List<Integer> list = Arrays.asList(1,3,2,4,5);
         Collections.sort(list);
         list.forEach(a -> System.out.println(a));
+        System.out.println("==================");
+        int a =0;
+        Runnable r = ()-> System.out.println("a:"+a);
+        Consumer<String> con = t -> System.out.println(t);
+        //只有一条语句的话 大括号和return 都可以省略
+        Comparator<Integer> comparator = (x,y)-> 1;
+        //1.8类型推断有所升级
+        //lambada 表达式需要函数式接口的支持
+        //若接口中只有一个抽象方法的借口，该接口就是函数式接口
+        //函数式接口 可以用 @FunctionalInterface
+
     }
 }
