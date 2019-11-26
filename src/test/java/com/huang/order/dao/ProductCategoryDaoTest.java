@@ -23,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collector;
 
 import static org.junit.Assert.*;
@@ -124,6 +126,27 @@ public class ProductCategoryDaoTest {
         System.out.println("==================");
         String resultStr = MyFunctionService.stringConvert("abc",(s) -> s.toUpperCase());
         System.out.println("resultStr = " + resultStr);
+        System.out.println("==================");
+        long result = MyFunctionService.doTestMethod(1L,33L,(x,y)->x+y);
+        System.out.println("result = " + result);
+        long result1 =  MyFunctionService.doTestMethod(2L,33L,(x,y)->x*y);
+        System.out.println("result1 = " + result1);
+        //java8 有四个核心内置函数式接口
+        //1.Consumer<T> accept 消费型接口    void
+        //2.Supplier<T> get 供给型接口       T
+        //1.Function<T,R> apply 函数型接口   R
+        //1.Predicate<T> test 断言型接口     boolean
+        MyFunctionService.doConsumerTest("123", System.out::println);
+        List<Integer> list2 = MyFunctionService.doSupplierTest(10,()->(int)(Math.random() * 100));
+        System.out.println(list2.toString());
+        Integer fstr = MyFunctionService.doFunctionTest("bbb", s -> s.length());
+        System.out.println(fstr);
+        boolean predicate = MyFunctionService.doPredicateTest("abc",(x)->x.length() == 3);
+        List<String> list3 = Arrays.asList("aaa","bbb","333","4444","55555","www");
+        List<String> list4 = MyFunctionService.doPredicateList(list3,(x)->x.length() == 3);
+        System.out.println("list4.toString() = " + list4.toString());
+        List<ProductInfo> list5= MyFunctionService.filterByT(list,(e)->e.getCategoryType() == 1);
+        System.out.println(list5.toString());
 
     }
     @Test
