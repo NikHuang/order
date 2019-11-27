@@ -179,7 +179,7 @@ public class ProductCategoryDaoTest {
 
         Supplier<Integer> supplier = productCategory::getCategoryId;
 //        Function<ProductCategory,Integer> function = (x)->x.doTest();
-        BiFunction<ProductCategory,Integer,String> function = ProductCategory::hasId;
+//        BiFunction<ProductCategory,Integer,String> function = ProductCategory::hasId;
         System.out.println("productCategory = " + function.apply(productCategory,1));
         List<Integer> list = Arrays.asList(1,2,3,4,5);
         list.forEach((e)->{
