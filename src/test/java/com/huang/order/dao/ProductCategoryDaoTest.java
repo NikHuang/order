@@ -26,6 +26,7 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import static org.junit.Assert.*;
@@ -172,4 +173,26 @@ public class ProductCategoryDaoTest {
         //函数式接口 可以用 @FunctionalInterface
 
     }
+    @Test
+    public void lambdaTest(){
+        ProductCategory productCategory = productCategoryService.findOne(1);
+
+        Supplier<Integer> supplier = productCategory::getCategoryId;
+//        Function<ProductCategory,Integer> function = (x)->x.doTest();
+        BiFunction<ProductCategory,Integer,String> function = ProductCategory::hasId;
+        System.out.println("productCategory = " + function.apply(productCategory,1));
+        List<Integer> list = Arrays.asList(1,2,3,4,5);
+        list.forEach((e)->{
+            if (e == supplier.get()){
+                System.out.println("get it");
+            }else {
+                System.out.println("don't get it");
+            }
+        });
+        //对象调用实例方法 返回值一致 参数类型一致
+        //类调用静态方法 返回值一致，参数类型一致
+        //类调用实例方法 双参数 前一致 后一致 （x,y）->x.equals(y)
+    }
+
+
 }
