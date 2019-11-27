@@ -23,11 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.stream.Collector;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 
@@ -179,8 +177,8 @@ public class ProductCategoryDaoTest {
 
         Supplier<Integer> supplier = productCategory::getCategoryId;
 //        Function<ProductCategory,Integer> function = (x)->x.doTest();
-//        BiFunction<ProductCategory,Integer,String> function = ProductCategory::hasId;
-        System.out.println("productCategory = " + function.apply(productCategory,1));
+//        BiFunction<ProductCategory,Integer,String> function = ProductCategory::hasId;1
+//        System.out.println("productCategory = " + function.apply(productCategory,1));
         List<Integer> list = Arrays.asList(1,2,3,4,5);
         list.forEach((e)->{
             if (e == supplier.get()){
@@ -194,5 +192,36 @@ public class ProductCategoryDaoTest {
         //类调用实例方法 双参数 前一致 后一致 （x,y）->x.equals(y)
     }
 
+
+    @Test
+    public void streamTest(){
+        List<ProductInfo> list = productInfoDao.findAll();
+        //1.创建stream
+        //四种方式创建 （1）Collection 的stream 串行流 或 parallelStream 并行流
+        Stream<ProductInfo> stream = list.stream();
+
+        //（2）Arrays 的静态stream
+        Integer[] integers = {1,2,3,4,5};
+        Stream<Integer> stream1 = Arrays.stream(integers);
+
+        //（3）Stream类的静态方法 of获取
+        Stream<String> stringStream = Stream.of("aa","bb","cc");
+
+        //(4)无限流
+        //迭代
+        Stream<Integer> stream2 = Stream.iterate(1, x->x+1);
+        //limit 限制数量
+        stream2.limit(10);
+        //生产
+        Stream<Double> stream3 = Stream.generate(()->Math.random()).limit(15);
+//        stringStream.forEach(System.out::println);
+
+        //2.中间操作
+        //(1)筛选与切片
+        //1) filter
+        list.stream().filter(item -> item.getCategoryType() == 2).forEach(System.out::println);
+
+
+    }
 
 }
