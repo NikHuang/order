@@ -196,6 +196,10 @@ public class ProductCategoryDaoTest {
     @Test
     public void streamTest(){
         List<ProductInfo> list = productInfoDao.findAll();
+        List<ProductInfo> list1 = new ArrayList<>();
+        List<ProductInfo> list2 = new ArrayList<>();
+        list.stream().filter((item)-> item.getCategoryType() == 1).forEach(x->list1.add(x));
+        list.stream().filter((item)-> item.getCategoryType() == 2).forEach(x->list2.add(x));
         //1.创建stream
         //四种方式创建 （1）Collection 的stream 串行流 或 parallelStream 并行流
         Stream<ProductInfo> stream = list.stream();
@@ -220,8 +224,34 @@ public class ProductCategoryDaoTest {
         //(1)筛选与切片
         //1) filter
         list.stream().filter(item -> item.getCategoryType() == 2).forEach(System.out::println);
+        //2) limit 截断流
+        //3)skip跳过流
+         list.stream().skip(1).limit(2).forEach(System.out::println);
+         //4)distinct 去重 需要重新hashcode和equals 暂略
 
+        //(2) 映射
+        //1）map
+        Stream<String> stringStream1 = list.stream().map(ProductInfo::getProductDescription);
+        //2)flatmap
+        //试着把list1 list2放进同一个Stream
+        List<ProductInfo> list3 = new ArrayList<>();
+        List<List<ProductInfo>> list4 =new ArrayList<>();
+        list4.add(list1);
+        list4.add(list2);
 
+        Stream<Stream<ProductInfo>> streamStream = list4.stream().map(x->x.stream());
+        streamStream.forEach(x->x.forEach(
+                y->list3.add(y)
+        ));
+        System.out.println("list3 = " + list3);
+        List<ProductInfo> list5 = new ArrayList<>();
+        list4.stream().flatMap(
+                x->x.stream()
+        ).forEach(
+                y->list5.add(y)
+        );
+        System.out.println("list5 = " + list5);
     }
+
 
 }
