@@ -232,6 +232,7 @@ public class ProductCategoryDaoTest {
         //(2) 映射
         //1）map
         Stream<String> stringStream1 = list.stream().map(ProductInfo::getProductDescription);
+
         //2)flatmap
         //试着把list1 list2放进同一个Stream
         List<ProductInfo> list3 = new ArrayList<>();
@@ -251,7 +252,24 @@ public class ProductCategoryDaoTest {
                 y->list5.add(y)
         );
         System.out.println("list5 = " + list5);
+        List<String> stringList1 = Arrays.asList("111","222","333","444");
+        List<String> stringLista = new ArrayList<>(stringList1);
+        List<String> stringList2 = Arrays.asList("aaa","bbb","ccc","ddd");
+        List<String> stringListb = new ArrayList<>(stringList2);
+        List<List<String>> lists = new ArrayList<>();
+        lists.add(stringLista);
+        lists.add(stringListb);
+
+        Stream<Stream<String>> streamStream1 =  lists.stream().map(x->x.stream());
+        streamStream1.forEach(x->x.forEach(System.out::println));
+
+        Stream<String> stringStream2 =lists.stream().flatMap(x->x.stream());
+        stringStream2.forEach(System.out::println);
+
+
     }
+
+
 
 
 }
