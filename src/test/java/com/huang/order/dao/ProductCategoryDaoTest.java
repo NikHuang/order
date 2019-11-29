@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
@@ -328,8 +329,47 @@ public class ProductCategoryDaoTest {
             }
         });
         System.out.println(o1p.get());
+
+        BigDecimal decimal = productInfoList.stream().map(ProductInfo::getProductPrice).reduce(new BigDecimal(0), BigDecimal::add);
+        System.out.println("decimal = " + decimal);
+        //map-reduce模式 十分重要
     }
 
+    @Test
+    public void testStreamCollectors() {
+        List<ProductInfo> productInfoList = productInfoDao.findAll();
+        List<String> l = productInfoList.stream().map(ProductInfo::getProductName).collect(Collectors.toList());
+        System.out.println("l = " + l);
+        //可以 toList toSet toMap  其他的 比如HashMap可以 Collectors.toCollection(()->new HashMap)
+
+        //求总数
+        long count = productInfoList.stream().collect(Collectors.counting());
+
+        //平均值 无需map
+        Double avg = productInfoList.stream().collect(Collectors.averagingDouble(e->e.getProductPrice().doubleValue()));
+
+        //总和
+        Double sum = productInfoList.stream().collect(Collectors.summingDouble(e->e.getProductPrice().doubleValue()));
+
+        //最大值
+         Optional<ProductInfo> optional =productInfoList.stream().max((e1,e2)->e1.getProductPrice().compareTo(e2.getProductPrice()));
+
+        //最小值  略
+        //分组
+       Map<Integer,List<ProductInfo>> map = productInfoList.stream().collect(Collectors.groupingBy(ProductInfo::getCategoryType));
+        //多级分组 暂略 造数据测试
+        //分区 满足条件一个区 不满足另一个区
+        Map<Boolean,List<ProductInfo>> map1 = productInfoList.stream().collect(Collectors.partitioningBy(e1->e1.getCategoryType() == 1));
+
+        //summary
+        DoubleSummaryStatistics d = productInfoList.stream().collect(Collectors.summarizingDouble(e1->e1.getProductPrice().doubleValue()));
+        d.getAverage();
+        d.getMax();
+        //joining连接字符串
+
+
+
+    }
 
 
 }
