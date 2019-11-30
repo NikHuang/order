@@ -9,9 +9,7 @@ import com.huang.order.enums.ProductStatusEnum;
 import com.huang.order.framework.utils.CommonUtil;
 import com.huang.order.service.ProductCategoryService;
 import com.huang.order.service.ProductInfoService;
-import com.huang.order.test.CommonFilterService;
-import com.huang.order.test.MyFunction;
-import com.huang.order.test.MyFunctionService;
+import com.huang.order.test.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
@@ -368,6 +366,47 @@ public class ProductCategoryDaoTest {
         //joining连接字符串
 
 
+
+    }
+    @Test
+    public void testStreamExam() {
+       List<Integer> integerList = Arrays.asList(1,2,3,4,5);
+        System.out.println(integerList);
+
+       List<Integer> integerList1 = integerList.stream().map(e->e*e).collect(Collectors.toList());
+        List<ProductInfo> productInfoList = productInfoDao.findAll();
+
+        productInfoList.stream().map(e->1).reduce(Integer::sum);
+
+        Trader zs = new Trader("张三","北京");
+        Trader ls = new Trader("李四","北京");
+        Trader ww = new Trader("王五","上海");
+        Trader zl = new Trader("赵六","上海");
+
+        List<Trader> traderList = Arrays.asList(zs,ls,ww,zl);
+        List<Transaction> transactionList = Arrays.asList(new Transaction(zs,2011,300),
+                new Transaction(ls,2011,400),
+                new Transaction(ls,2012,350),
+                new Transaction(ww,2012,600),
+                new Transaction(zl,2011,200),
+                new Transaction(zl,2012,510));
+        List<Transaction> transactionList1 =transactionList.stream().filter( e-> e.getYear() == 2011)
+                .sorted(Comparator.comparing(Transaction::getValue)).collect(Collectors.toList());
+        System.out.println("transactionList1 = " + transactionList1);
+        List<String> cityList = transactionList.stream().map(e -> e.getTrader().getCity()).distinct().collect(Collectors.toList());
+        System.out.println("cityList = " + cityList);
+        List<Trader> nameListFromCertainCity = transactionList.stream().filter(e->e.getTrader().getCity().equals("北京")  ).
+                map(Transaction::getTrader).
+                sorted(Comparator.comparing(Trader::getName)).
+                distinct().collect(Collectors.toList());
+        System.out.println("nameListFromCertainCity = " + nameListFromCertainCity);
+        List<String> traderNameList = transactionList.stream().filter(e->e.getTrader().getCity().equals("北京")).
+                map(e->e.getTrader().getName()).
+                sorted(String::compareTo).
+                distinct().collect(Collectors.toList());
+        System.out.println("traderNameList = " + traderNameList);
+        boolean anyCityMatch = transactionList.stream().anyMatch(e->e.getTrader().getCity().equals("上海"));
+        System.out.println("anyCityMatch = " + anyCityMatch);
 
     }
 
