@@ -409,6 +409,39 @@ public class ProductCategoryDaoTest {
         System.out.println("anyCityMatch = " + anyCityMatch);
 
     }
+    @Test
+    public void testStreamAgain() {
+        List<Integer> integerList = Arrays.asList(1,2,3,4,5);
+        List<Integer> integerList1 = integerList.stream().map(e->e*e).collect(Collectors.toList());
+        System.out.println("integerList1 = " + integerList1);
+        List<ProductInfo> productInfoList = productInfoDao.findAll();
+        long count = productInfoList.stream().map(e->1).reduce(0,Integer::sum);
+        System.out.println("count = " + count);
+
+        Trader zs = new Trader("张三","北京");
+        Trader ls = new Trader("李四","北京");
+        Trader ww = new Trader("王五","上海");
+        Trader zl = new Trader("赵六","上海");
+
+        List<Trader> traderList = Arrays.asList(zs,ls,ww,zl);
+        List<Transaction> transactionList = Arrays.asList(new Transaction(zs,2011,300),
+                new Transaction(ls,2011,400),
+                new Transaction(ls,2012,350),
+                new Transaction(ww,2012,600),
+                new Transaction(zl,2011,200),
+                new Transaction(zl,2012,510));
+        List<Transaction> vl = transactionList.stream().filter(e->e.getYear() == 2011).sorted((x,y)->Integer.compare(x.getValue(),y.getValue())).collect(Collectors.toList());
+        System.out.println("vl = " + vl);
+        List<String> cityList = transactionList.stream().map(e->e.getTrader().getCity()).distinct().collect(Collectors.toList());
+        System.out.println("cityList = " + cityList);
+        List<Trader> traderList1 = transactionList.stream().map(Transaction::getTrader).distinct().sorted((x,y)->x.getName().compareTo(y.getName())).collect(Collectors.toList());
+        System.out.println("traderList1 = " + traderList1);
+        //4 略
+        boolean wib = traderList.stream().allMatch(e->e.getCity().equals("北京"));
+        System.out.println(wib);
+
+
+    }
 
 
 }
