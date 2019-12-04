@@ -21,9 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.RecursiveTask;
 import java.util.function.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
@@ -439,6 +441,48 @@ public class ProductCategoryDaoTest {
         //4 略
         boolean wib = traderList.stream().allMatch(e->e.getCity().equals("北京"));
         System.out.println(wib);
+
+
+    }
+    @Test
+    public void testBx(){
+        //fork join 先分叉再合并
+        //fork join 框架
+        //java8 并行流
+        //.parallel即可 仅大量任务时适用 少量任务时效率不如 串行流
+
+
+        //optional
+        //.of
+        List<ProductInfo> productInfos = new ArrayList<>();
+        List<ProductInfo> productInfoList = productInfoDao.findAll();
+       Optional<List<ProductInfo>> optional = Optional.of(productInfos);
+        System.out.println("==============");
+        System.out.println(optional.get());
+        System.out.println("================");
+        //如果 .of(null) 会报错 空指针
+//        Optional<List<ProductInfo>> optional1 = Optional.of(null);
+        //.empty() 如果get回 报错 NoSuchELEMENT异常
+        Optional<List<ProductInfo>> optional2 = Optional.empty();
+//        optional2.get();
+        //Optional.ofNullable 如果不为null则 of ，如果为null则 empty
+        Optional<List<ProductInfo>> optional3 = Optional.ofNullable(null);
+        //结合 .isPresent 判断是否包含值 返回boolean
+        System.out.println(optional3.isPresent());
+        //.orElse  如果为空 则返回参数 否则 返回该值
+        System.out.println(optional3.orElse(productInfoList));
+        //.orElseGet 结合 ofNullable使用 可大致理解为使用lambda方式orElse 但是与orElse不同 在lambda {}块中可以进行一些操作 而不单单是返回一个值
+        System.out.println(optional3.orElseGet(()->{
+            System.out.println("+++++++++"); //可进行操作
+            return productInfoList;
+        }));
+        ProductInfo productInfo = new ProductInfo();
+        Optional<ProductInfo> infoOptional = Optional.ofNullable(productInfo);
+        //.map获取optional 如果值为null则返回Optional.empty()
+        Optional<String> stringOptional =infoOptional.map(e->e.getProductDescription());
+
+
+
 
 
     }
