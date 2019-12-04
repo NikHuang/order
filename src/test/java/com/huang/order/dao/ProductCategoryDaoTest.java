@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparingInt;
 import static org.junit.Assert.*;
 
 /**
@@ -393,13 +395,13 @@ public class ProductCategoryDaoTest {
                 new Transaction(zl,2011,200),
                 new Transaction(zl,2012,510));
         List<Transaction> transactionList1 =transactionList.stream().filter( e-> e.getYear() == 2011)
-                .sorted(Comparator.comparing(Transaction::getValue)).collect(Collectors.toList());
+                .sorted(comparing(Transaction::getValue)).collect(Collectors.toList());
         System.out.println("transactionList1 = " + transactionList1);
         List<String> cityList = transactionList.stream().map(e -> e.getTrader().getCity()).distinct().collect(Collectors.toList());
         System.out.println("cityList = " + cityList);
         List<Trader> nameListFromCertainCity = transactionList.stream().filter(e->e.getTrader().getCity().equals("北京")  ).
                 map(Transaction::getTrader).
-                sorted(Comparator.comparing(Trader::getName)).
+                sorted(comparing(Trader::getName)).
                 distinct().collect(Collectors.toList());
         System.out.println("nameListFromCertainCity = " + nameListFromCertainCity);
         List<String> traderNameList = transactionList.stream().filter(e->e.getTrader().getCity().equals("北京")).
@@ -432,17 +434,25 @@ public class ProductCategoryDaoTest {
                 new Transaction(ww,2012,600),
                 new Transaction(zl,2011,200),
                 new Transaction(zl,2012,510));
-        List<Transaction> vl = transactionList.stream().filter(e->e.getYear() == 2011).sorted((x,y)->Integer.compare(x.getValue(),y.getValue())).collect(Collectors.toList());
+        List<Transaction> vl = transactionList.stream().filter(e->e.getYear() == 2011).sorted(comparingInt(Transaction::getValue)).collect(Collectors.toList());
         System.out.println("vl = " + vl);
         List<String> cityList = transactionList.stream().map(e->e.getTrader().getCity()).distinct().collect(Collectors.toList());
         System.out.println("cityList = " + cityList);
-        List<Trader> traderList1 = transactionList.stream().map(Transaction::getTrader).distinct().sorted((x,y)->x.getName().compareTo(y.getName())).collect(Collectors.toList());
+        List<Trader> traderList1 = transactionList.stream().map(Transaction::getTrader).distinct().sorted(comparing(Trader::getName)).collect(Collectors.toList());
         System.out.println("traderList1 = " + traderList1);
         //4 略
         boolean wib = traderList.stream().allMatch(e->e.getCity().equals("北京"));
         System.out.println(wib);
 
-
+        Map<String,Map<String,Integer>> mapMap =
+        transactionList.stream().collect(Collectors.groupingBy(e->e.getTrader().getCity(),Collectors.groupingBy(e->e.getTrader().getName(),Collectors.summingInt((x)->x.getValue()))));
+        System.out.println("mapMap = " + mapMap);
+        Integer sum = transactionList.stream().filter(e->e.getTrader().getCity().equals("北京")).collect(Collectors.summingInt(e->e.getValue()));
+        System.out.println("sum = " + sum);
+        Optional<Integer> maxValue = transactionList.stream().map(e->e.getValue()).collect(Collectors.maxBy(Integer::compareTo));
+        System.out.println("maxValue = " + maxValue);
+        Optional<Transaction> minValueTran = transactionList.stream().collect(Collectors.minBy((x,y)->x.getValue().compareTo(y.getValue())));
+        System.out.println("minValueTran.get() = " + minValueTran.get());
     }
     @Test
     public void testBx(){
