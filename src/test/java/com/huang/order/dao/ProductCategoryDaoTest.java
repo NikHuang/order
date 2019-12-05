@@ -466,7 +466,7 @@ public class ProductCategoryDaoTest {
         //.of
         List<ProductInfo> productInfos = new ArrayList<>();
         List<ProductInfo> productInfoList = productInfoDao.findAll();
-       Optional<List<ProductInfo>> optional = Optional.of(productInfos);
+        Optional<List<ProductInfo>> optional = Optional.of(productInfos);
         System.out.println("==============");
         System.out.println(optional.get());
         System.out.println("================");

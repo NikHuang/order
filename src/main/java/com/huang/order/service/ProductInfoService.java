@@ -26,4 +26,8 @@ public class ProductInfoService {
         return new PageInfo<>(list);
     }
 
+    public List<ProductInfo> getUpAll(Integer status){
+        return productInfoDao.findByStatus(status);
+    }
+
 }
