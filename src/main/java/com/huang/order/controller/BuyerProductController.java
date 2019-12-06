@@ -43,6 +43,7 @@ public class BuyerProductController {
             productVo.setCategoryType(e.getCategoryType());
             List<ProductInfoVo> productInfoVos = productInfoList.stream().filter(x->x.getCategoryType() == e.getCategoryType()).map( y->{
                 ProductInfoVo productInfoVo = new ProductInfoVo();
+                //复制对象
                 BeanUtils.copyProperties(y,productInfoVo);
                 return productInfoVo;
             }).collect(Collectors.toList());
