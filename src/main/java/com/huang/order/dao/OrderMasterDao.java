@@ -13,4 +13,6 @@ import java.util.List;
 public interface OrderMasterDao {
 
     List<OrderMaster> findOrderMasterByOpenid(@Param("openid") String openid);
+
+    void saveWithGenerateId(OrderMaster orderMaster);
 }

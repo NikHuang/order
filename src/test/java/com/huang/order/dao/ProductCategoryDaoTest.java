@@ -2,6 +2,7 @@ package com.huang.order.dao;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.huang.order.domain.OrderMaster;
 import com.huang.order.domain.ProductCategory;
 import com.huang.order.domain.ProductInfo;
 import com.huang.order.dto.PageInfoDto;
@@ -48,6 +49,9 @@ public class ProductCategoryDaoTest {
 
     @Autowired
     ProductInfoDao productInfoDao;
+
+    @Autowired
+    OrderMasterDao orderMasterDao;
 
 
     @Test
@@ -497,5 +501,19 @@ public class ProductCategoryDaoTest {
 
     }
 
+    @Test
+    public void testOrderMaster(){
+        OrderMaster orderMaster = new OrderMaster();
+        orderMaster.setBuyerAddress("测试地址");
+        orderMaster.setBuyerName("测试用户");
+        orderMaster.setBuyerOpenid("aaa");
+        orderMaster.setBuyerPhone("13942618999");
+        orderMaster.setOrderAmount(new BigDecimal(9.9));
+//        orderMaster.setOrderId("dsgsffas");
+        orderMasterDao.saveWithGenerateId(orderMaster);
+        System.out.println("===============");
+
+
+    }
 
 }

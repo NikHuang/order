@@ -2,6 +2,7 @@ package com.huang.order.domain;
 
 import com.huang.order.enums.OrderStatusEnum;
 import com.huang.order.enums.PayStatusEnum;
+import com.huang.order.framework.annotations.GenerateKey;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.util.Date;
 @Data
 public class OrderMaster {
 
+    @GenerateKey
     private String orderId;
 
     private String buyerName;

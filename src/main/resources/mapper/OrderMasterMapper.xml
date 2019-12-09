@@ -7,4 +7,8 @@
     <select id="findOrderMasterByOpenid" parameterType="Object" resultType="com.huang.order.domain.OrderMaster">
         SELECT * FROM `order_master` WHERE buyer_openid = #{openid}
     </select>
+    <insert id="saveWithGenerateId" parameterType="Object" >
+        INSERT INTO `order_master`(`order_id`,`buyer_name`,`buyer_phone`,`buyer_address`,`buyer_openid`,`order_amount`,`order_status`,`pay_status`)
+        VALUES (#{orderId},#{buyerName},#{buyerPhone},#{buyerAddress},#{buyerOpenid},#{orderAmount},#{orderStatus},#{payStatus})
+    </insert>
 </mapper>
