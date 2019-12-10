@@ -55,25 +55,25 @@ public class CommonAspect {
         return point.proceed();
     }
 
-    @Around("execution(public * com.huang.order.dao.*.*WithGenerateId(..))")
-    public Object queryWithGenerateId(ProceedingJoinPoint point) throws Throwable {
-        Object o = point.getArgs()[0];
-        Class<?> clazz = o.getClass();
-        String commonId = CommonUtil.generateObjectId(o);
-        Field[] fields = clazz.getDeclaredFields();
-        Arrays.stream(fields).filter(e-> e.getAnnotation(GenerateKey.class) != null).map(e->e).forEach(
-                e->{
-                    e.setAccessible(true);
-                    try {
-                        System.out.println("==_____))))");
-                        e.set(o,commonId);
-                    } catch (IllegalAccessException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-        );
-
-
-        return point.proceed();
-    }
+//    @Around("execution(public * com.huang.order.dao.*.*WithGenerateId(..))")
+//    public Object queryWithGenerateId(ProceedingJoinPoint point) throws Throwable {
+//        Object o = point.getArgs()[0];
+//        Class<?> clazz = o.getClass();
+//        String commonId = CommonUtil.generateObjectId(o);
+//        Field[] fields = clazz.getDeclaredFields();
+//        Arrays.stream(fields).filter(e-> e.getAnnotation(GenerateKey.class) != null).map(e->e).forEach(
+//                e->{
+//                    e.setAccessible(true);
+//                    try {
+//                        System.out.println("==_____))))");
+//                        e.set(o,commonId);
+//                    } catch (IllegalAccessException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                }
+//        );
+//
+//
+//        return point.proceed();
+//    }
 }

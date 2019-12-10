@@ -12,7 +12,12 @@ import java.util.List;
 @Mapper
 public interface OrderMasterDao {
 
-    List<OrderMaster> findOrderMasterByOpenid(@Param("openid") String openid);
+    //通过 openid查询orderMaster分页信息
+    List<OrderMaster> findOrderMasterByOpenidWithPage(@Param("openid") String openid);
 
-    void saveWithGenerateId(OrderMaster orderMaster);
+    //保存orderMaster信息
+    void save(OrderMaster orderMaster);
+
+
+
 }

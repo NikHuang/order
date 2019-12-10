@@ -1,13 +1,16 @@
 package com.huang.order.dao;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.huang.order.domain.OrderDetail;
 import com.huang.order.domain.OrderMaster;
 import com.huang.order.domain.ProductCategory;
 import com.huang.order.domain.ProductInfo;
 import com.huang.order.dto.PageInfoDto;
 import com.huang.order.enums.ProductStatusEnum;
 import com.huang.order.framework.utils.CommonUtil;
+import com.huang.order.service.OrderMasterService;
 import com.huang.order.service.ProductCategoryService;
 import com.huang.order.service.ProductInfoService;
 import com.huang.order.test.*;
@@ -53,6 +56,11 @@ public class ProductCategoryDaoTest {
     @Autowired
     OrderMasterDao orderMasterDao;
 
+    @Autowired
+    OrderMasterService orderMasterService;
+
+    @Autowired
+    OrderDetailDao orderDetailDao;
 
     @Test
     public void findOneTest() {
@@ -503,17 +511,26 @@ public class ProductCategoryDaoTest {
 
     @Test
     public void testOrderMaster(){
-        OrderMaster orderMaster = new OrderMaster();
-        orderMaster.setBuyerAddress("测试地址");
-        orderMaster.setBuyerName("测试用户");
-        orderMaster.setBuyerOpenid("aaa");
-        orderMaster.setBuyerPhone("13942618999");
-        orderMaster.setOrderAmount(new BigDecimal(9.9));
-//        orderMaster.setOrderId("dsgsffas");
-        orderMasterDao.saveWithGenerateId(orderMaster);
-        System.out.println("===============");
 
 
+        PageInfo<OrderMaster> orderMasterList = orderMasterService.findOrderMasterByOpenidWithPage(new PageInfoDto(1,2),"aaa");
+        System.out.println(orderMasterList);
+
+
+    }
+
+    @Test
+    public void testOrderDetail(){
+
+        OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setDetailId(CommonUtil.generateObjectId(orderDetail));
+        orderDetail.setOrderId("d0a9c1f522db79e61f2fa152f6c98787");
+        orderDetail.setProductId("aabdd9bab9254d363344567eec0395a8");
+        orderDetail.setProductName("酸奶");
+        orderDetail.setProductPrice(new BigDecimal(6.9));
+        orderDetail.setProductQuantity(1);
+        orderDetail.setProductIcon("http://xxxxx.jpg");
+        orderDetailDao.save(orderDetail);
     }
 
 }
