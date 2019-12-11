@@ -25,4 +25,12 @@
     <select id="findAllWithPage" parameterType="Object" resultType="com.huang.order.domain.ProductInfo">
         SELECT * FROM product_info WHERE 1=1
     </select>
+
+    <update id="reduceStock" parameterType="Object">
+        update `product_info` set `product_stock` = `product_stock` - #{count} WHERE `product_id` = #{productId}
+    </update>
+
+    <update id="addStock" parameterType="Object">
+        update `product_info` set `product_stock` = `product_stock` + #{count}  WHERE `product_id` = #{productId}
+    </update>
 </mapper>

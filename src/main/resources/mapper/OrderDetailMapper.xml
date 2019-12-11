@@ -9,4 +9,8 @@
         VALUES (#{detailId},#{orderId},#{productId},#{productName},#{productPrice},#{productQuantity},#{productIcon})
     </insert>
 
+    <select id="findByOrderId" parameterType="Object" resultType="com.huang.order.domain.OrderDetail">
+        SELECT * FROM `order_detail`WHERE order_id = #{orderId}
+    </select>
+
 </mapper>

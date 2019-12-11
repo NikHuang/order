@@ -521,16 +521,7 @@ public class ProductCategoryDaoTest {
 
     @Test
     public void testOrderDetail(){
-
-        OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setDetailId(CommonUtil.generateObjectId(orderDetail));
-        orderDetail.setOrderId("d0a9c1f522db79e61f2fa152f6c98787");
-        orderDetail.setProductId("aabdd9bab9254d363344567eec0395a8");
-        orderDetail.setProductName("酸奶");
-        orderDetail.setProductPrice(new BigDecimal(6.9));
-        orderDetail.setProductQuantity(1);
-        orderDetail.setProductIcon("http://xxxxx.jpg");
-        orderDetailDao.save(orderDetail);
+       productInfoDao.addStock(1,"aabdd9bab9254d363344567eec0395a8");
     }
 
 }

@@ -25,7 +25,8 @@ public interface ProductInfoDao {
     List<ProductInfo> findAllWithPage();
 
     //加库存
-
+    void addStock(@Param("count")Integer count,@Param("productId") String productId);
     //减库存
+    void reduceStock(@Param("count")Integer count,@Param("productId") String productId);
 
 }

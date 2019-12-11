@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.huang.order.dao.ProductInfoDao;
+import com.huang.order.domain.OrderMaster;
 import com.huang.order.domain.ProductInfo;
 import com.huang.order.dto.PageInfoDto;
 import org.apache.ibatis.annotations.Param;
@@ -29,5 +30,14 @@ public class ProductInfoService {
     public List<ProductInfo> getUpAll(Integer status){
         return productInfoDao.findByStatus(status);
     }
+
+    public ProductInfo findOneByProductId(String productId){
+        return productInfoDao.findOne(productId);
+    }
+
+    public void reduceStock(Integer count,String productId){
+         productInfoDao.reduceStock(count,productId);
+    }
+
 
 }
