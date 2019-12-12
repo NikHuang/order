@@ -15,6 +15,9 @@ public interface OrderDetailDao {
     //保存订单详情
     void save(OrderDetail orderDetail);
 
+    //保存订单详情 批量
+    void saveBatch(@Param("detailList") List<OrderDetail> orderDetailList);
+
     //根据id查找
     List<OrderDetail> findByOrderId(@Param("orderId") String orderId);
 }

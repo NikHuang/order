@@ -33,4 +33,16 @@
     <update id="addStock" parameterType="Object">
         update `product_info` set `product_stock` = `product_stock` + #{count}  WHERE `product_id` = #{productId}
     </update>
+
+    <update id="reduceStockBatch" parameterType="java.util.List">
+        <foreach collection="detailList" item="item" index="index"  separator=";">
+              update `product_info` set `product_stock` = `product_stock` - #{item.productQuantity} WHERE `product_id` = #{item.productId}
+        </foreach>
+    </update>
+
+    <update id="addStockBatch" parameterType="java.util.List">
+        <foreach collection="detailList" item="item" index="index"  separator=";">
+            update `product_info` set `product_stock` = `product_stock` + #{item.productQuantity} WHERE `product_id` = #{item.productId}
+        </foreach>
+    </update>
 </mapper>

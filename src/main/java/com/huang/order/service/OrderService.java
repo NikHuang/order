@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
 
 /**
  * Created by Administrator on 2019/12/11.
@@ -32,6 +34,9 @@ public class OrderService {
     @Autowired
     ProductInfoService productInfoService;
 
+    @Autowired
+    OrderMasterService orderMasterService;
+
     //1.创建订单
     @Transactional
     public boolean createOrder(OrderDto orderDto){
@@ -42,34 +47,34 @@ public class OrderService {
         //先取orderDetail并计算价格
         List<OrderDetail> orderDetails = orderDto.getOrderDetails();
         final BigDecimal[] priceAmount = {new BigDecimal(0)};
-        orderDetails.stream().forEach(e->{
+
+        orderDetails = orderDetails.stream().map(e->{
             ProductInfo p = productInfoService.findOneByProductId(e.getProductId());
             if (p == null){
                 throw new CommonException(CodeMessage.NOSUCHGOODS);
-            }
-            Integer stock = p.getProductStock();
-            Integer productQuantity = e.getProductQuantity();
-            //判断库存是否足够
-            if (stock < productQuantity){
-                throw new CommonException(CodeMessage.NOSTOCK);
             }
             e.setOrderId(orderId);
             e.setDetailId(CommonUtil.generateObjectId(e));
             BigDecimal productPrice = p.getProductPrice();
             //算该商品总价
-            BigDecimal orderDetailPrice = productPrice.multiply(new BigDecimal(productQuantity));
+            BigDecimal orderDetailPrice = productPrice.multiply(new BigDecimal(e.getProductQuantity()));
             priceAmount[0] = priceAmount[0].add(orderDetailPrice);
             e.setProductPrice(orderDetailPrice);
             e.setProductIcon(p.getProductIcon());
-            //保存orderDetail
-            orderDetailDao.save(e);
-            //减库存
-            productInfoService.reduceStock(productQuantity,e.getProductId());
-        });
+            e.setProductName(p.getProductName());
+            //返回orderDetail
+            return e;
+        }).collect(Collectors.toList());
+
         BeanUtils.copyProperties(orderDto,orderMaster);
         orderMaster.setOrderId(orderId);
         orderMaster.setOrderAmount(priceAmount[0]);
+        //保存orderMaster
         orderMasterDao.save(orderMaster);
+        //减库存
+        productInfoService.reduceStockBatch(orderDetails);
+        //保存orderDetail
+        orderDetailDao.saveBatch(orderDetails);
         return true;
 
     }

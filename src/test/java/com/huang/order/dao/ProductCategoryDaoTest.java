@@ -7,10 +7,12 @@ import com.huang.order.domain.OrderDetail;
 import com.huang.order.domain.OrderMaster;
 import com.huang.order.domain.ProductCategory;
 import com.huang.order.domain.ProductInfo;
+import com.huang.order.dto.OrderDto;
 import com.huang.order.dto.PageInfoDto;
 import com.huang.order.enums.ProductStatusEnum;
 import com.huang.order.framework.utils.CommonUtil;
 import com.huang.order.service.OrderMasterService;
+import com.huang.order.service.OrderService;
 import com.huang.order.service.ProductCategoryService;
 import com.huang.order.service.ProductInfoService;
 import com.huang.order.test.*;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -61,6 +64,9 @@ public class ProductCategoryDaoTest {
 
     @Autowired
     OrderDetailDao orderDetailDao;
+
+    @Autowired
+    OrderService orderService;
 
     @Test
     public void findOneTest() {
@@ -511,17 +517,15 @@ public class ProductCategoryDaoTest {
 
     @Test
     public void testOrderMaster(){
-
-
         PageInfo<OrderMaster> orderMasterList = orderMasterService.findOrderMasterByOpenidWithPage(new PageInfoDto(1,2),"aaa");
         System.out.println(orderMasterList);
-
-
     }
 
     @Test
     public void testOrderDetail(){
-       productInfoDao.addStock(1,"aabdd9bab9254d363344567eec0395a8");
+
+
+        System.out.println("====end======");
     }
 
 }

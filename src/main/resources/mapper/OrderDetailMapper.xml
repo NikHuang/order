@@ -9,6 +9,13 @@
         VALUES (#{detailId},#{orderId},#{productId},#{productName},#{productPrice},#{productQuantity},#{productIcon})
     </insert>
 
+    <insert id="saveBatch" parameterType="Object" >
+        <foreach collection="detailList"  item="item" index="index"  separator=";">
+            INSERT INTO `order_detail`(`detail_id`,`order_id`,`product_id`,`product_name`,`product_price`,`product_quantity`,`product_icon`)
+            VALUES (#{item.detailId},#{item.orderId},#{item.productId},#{item.productName},#{item.productPrice},#{item.productQuantity},#{item.productIcon})
+        </foreach>
+    </insert>
+
     <select id="findByOrderId" parameterType="Object" resultType="com.huang.order.domain.OrderDetail">
         SELECT * FROM `order_detail`WHERE order_id = #{orderId}
     </select>
