@@ -7,7 +7,9 @@ import com.huang.order.dao.ProductInfoDao;
 import com.huang.order.domain.OrderDetail;
 import com.huang.order.domain.OrderMaster;
 import com.huang.order.domain.ProductInfo;
+import com.huang.order.dto.CartDto;
 import com.huang.order.dto.PageInfoDto;
+import com.huang.order.enums.ProductStatusEnum;
 import com.huang.order.framework.exceptions.CommonException;
 import com.huang.order.vo.CodeMessage;
 import org.apache.ibatis.annotations.Param;
@@ -42,19 +44,34 @@ public class ProductInfoService {
          productInfoDao.reduceStock(count,productId);
     }
 
-    public void reduceStockBatch(List<OrderDetail> orderDetailList){
+    public void reduceStockBatch(List<CartDto> cartDtos){
         //先判断物品是否存在 再判断库存是否足够 再减库存
-        orderDetailList.stream().forEach(e->{
+        cartDtos.stream().forEach(e->{
             String productId = e.getProductId();
             ProductInfo p = productInfoDao.findOne(productId);
             if (p == null){
-                throw new CommonException(CodeMessage.NOSUCHGOODS);
+                throw new CommonException(CodeMessage.NOSUCHGOODS.fillArgs(e.getProductName()));
+            }
+            if (p.getProductStatus() == ProductStatusEnum.OFFSALE.getCode()){
+                throw new CommonException(CodeMessage.GOODSOFFSALE.fillArgs(e.getProductName()));
             }
             if (e.getProductQuantity() > p.getProductStock()){
                 throw new CommonException(CodeMessage.NOSTOCK);
             }
+            productInfoDao.reduceStock(e.getProductQuantity(),productId);
         });
-        productInfoDao.reduceStockBatch(orderDetailList);
+    }
+
+    public void addStockBatch(List<CartDto> cartDtos){
+        //先判断物品是否存在 再判断库存是否足够 再减库存
+        cartDtos.stream().forEach(e->{
+            String productId = e.getProductId();
+            ProductInfo p = productInfoDao.findOne(productId);
+            if (p == null){
+                throw new CommonException(CodeMessage.NOSUCHGOODS.fillArgs(e.getProductName()));
+            }
+            productInfoDao.addStock(e.getProductQuantity(),productId);
+        });
     }
 
 

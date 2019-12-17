@@ -523,9 +523,37 @@ public class ProductCategoryDaoTest {
 
     @Test
     public void testOrderDetail(){
+        OrderMaster orderMaster = new OrderMaster();
+        orderMaster.setBuyerAddress("测试地址1");
+        orderMaster.setBuyerName("测试人员1");
+        orderMaster.setBuyerPhone("13942688888");
+        orderMaster.setBuyerOpenid("aaa");
 
+        OrderDetail orderDetail1 = new OrderDetail();
+        orderDetail1.setProductId("380db0bef3e542efaec1bbf2187fd82d");
+        orderDetail1.setProductName("牛奶");
+        orderDetail1.setProductQuantity(1);
 
+        OrderDetail orderDetail2 = new OrderDetail();
+        orderDetail2.setProductName("酸奶");
+        orderDetail2.setProductQuantity(1);
+        orderDetail2.setProductId("8e63a2b724464241de143a4df0f23d97");
+
+        List<OrderDetail> orderDetails = Arrays.asList(orderDetail1,orderDetail2);
+
+        OrderDto orderDto = new OrderDto();
+
+        BeanUtils.copyProperties(orderMaster,orderDto);
+        orderDto.setOrderDetails(orderDetails);
+
+        orderService.createOrder(orderDto);
         System.out.println("====end======");
+    }
+
+    @Test
+    public void testOrderDetailCancel(){
+        String orderId = "2d3674022eb17f6e6f8f84f1ed9da284";
+        orderService.cancelOrder(orderId);
     }
 
 }

@@ -3,6 +3,7 @@ package com.huang.order.dao;
 import com.github.pagehelper.PageInfo;
 import com.huang.order.domain.OrderDetail;
 import com.huang.order.domain.ProductInfo;
+import com.huang.order.dto.CartDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.*;
@@ -29,10 +30,10 @@ public interface ProductInfoDao {
     void addStock(@Param("count")Integer count,@Param("productId") String productId);
     //减库存
     void reduceStock(@Param("count")Integer count,@Param("productId") String productId);
-
-    //加库存 批量
-    void addStockBatch(@Param("detailList") List<OrderDetail> orderDetailList);
-    //加库存 批量
-    void reduceStockBatch(@Param("detailList") List<OrderDetail> orderDetailList);
+//
+//    //加库存 批量
+//    void addStockBatch(@Param("detailList") List<CartDto> cartDtoList);
+//    //加库存 批量
+//    void reduceStockBatch(@Param("detailList") List<CartDto> cartDtoList);
 
 }

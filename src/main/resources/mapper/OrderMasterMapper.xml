@@ -11,4 +11,12 @@
         INSERT INTO `order_master`(`order_id`,`buyer_name`,`buyer_phone`,`buyer_address`,`buyer_openid`,`order_amount`,`order_status`,`pay_status`)
         VALUES (#{orderId},#{buyerName},#{buyerPhone},#{buyerAddress},#{buyerOpenid},#{orderAmount},#{orderStatus},#{payStatus})
     </insert>
+
+    <select id="findOneByOrderId" parameterType="Object" resultType="com.huang.order.domain.OrderMaster">
+        select * from  `order_master` where order_id = #{orderId}
+    </select>
+
+    <update id="changeOrderStatusByOrderId" parameterType="Object">
+        update `order_master` set `order_status` = #{orderStatus} where `order_id`= #{orderId}
+    </update>
 </mapper>
